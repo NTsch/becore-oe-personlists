@@ -1,28 +1,32 @@
 <xsl:stylesheet xmlns:tei="http://www.tei-c.org/ns/1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs" version="2.0">
-    
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
-    
     <xsl:template match="@* | node()">
         <xsl:copy>
             <xsl:apply-templates select="@* | node()"/>
         </xsl:copy>
     </xsl:template>
-    
-    <xsl:template match="reg">
+    <xsl:template match="tei:reg">
         <xsl:copy>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-    
-    <xsl:template match="tei:person">
+    <xsl:template match="tei:date">
         <xsl:copy>
-            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates/>
         </xsl:copy>
+    </xsl:template>
+    <xsl:template match="tei:note">
+        <xsl:copy>
+            <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="tei:person">
         <tei:person>
+            <xsl:copy-of select="@*"/>
             <xsl:variable name="attrn">
                 <xsl:value-of select="normalize-space(tei:persName/@n)"/>
             </xsl:variable>
@@ -33,7 +37,9 @@
                 <xsl:choose>
                     <xsl:when test="position() = 1">
                         <tei:persName>
-                            <xsl:attribute name="n" select="$attrn"/>
+                            <xsl:if test="$attrn != ''">
+                                <xsl:attribute name="n" select="$attrn"/>
+                            </xsl:if>
                             <xsl:if test="$attrkey != ''">
                                 <xsl:attribute name="key" select="$attrkey"/>
                             </xsl:if>
@@ -47,12 +53,14 @@
                                     <xsl:value-of select="."/>
                                 </tei:residence>
                             </xsl:when>
-                            <xsl:when test="matches(., '^(Abt|Herzog|Prior|\w*[Bb]ischof|Dechant|Propst|Probst|Kardinal|Papst|König|\w*[Hh]erzog|Bürgermeister|Richter|Rat|\w*[Ss]chreiber|Pfleger)')">
+                            <xsl:when
+                                test="matches(., '^(Abt|Herzog|Prior|\w*[Bb]ischof|Dechant|Propst|Probst|Kardinal|Papst|König|\w*[Hh]erzog|Bürgermeister|Richter|Rat|\w*[Ss]chreiber|Pfleger)')">
                                 <tei:occupation>
                                     <xsl:value-of select="."/>
                                 </tei:occupation>
                             </xsl:when>
-                            <xsl:when test="matches(., '^(Frau|Gattin|Bruder|Schwester|Sohn|Tochter|Witwe|Vater|Mutter)')">
+                            <xsl:when
+                                test="matches(., '^(Frau|Gattin|Bruder|Schwester|Sohn|Tochter|Witwe|Vater|Mutter)')">
                                 <tei:note>
                                     <xsl:attribute name="type">relation</xsl:attribute>
                                     <xsl:value-of select="."/>
@@ -68,14 +76,9 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
-            <xsl:apply-templates select="note"/>
+            <xsl:apply-templates select="tei:note"/>
+            <xsl:apply-templates select="./tei:persName/tei:reg"/>
+            <xsl:apply-templates select="./tei:persName/tei:date"/>
         </tei:person>
     </xsl:template>
-    
-    <xsl:template match="note">
-        <tei:note>
-            <xsl:apply-templates/>
-        </tei:note>
-    </xsl:template>
-    
 </xsl:stylesheet>

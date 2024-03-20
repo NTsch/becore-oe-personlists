@@ -41,7 +41,7 @@
       <sourceDesc>
         <p>Based on TEI Minimal.</p>
       </sourceDesc>
-    </fileDesc><encodingDesc><appInfo><application ident="RomaJS" version="1.0.0" when="2024-03-20T06:26:51.371Z"><desc>File edited with <ref target="https://github.com/TEIC/romajs">RomaJS</ref></desc></application></appInfo></encodingDesc>
+    </fileDesc><encodingDesc><appInfo><application ident="RomaJS" version="1.0.0" when="2024-03-20T06:26:51.371Z"><desc>File edited with <ref target="https://github.com/TEIC/romajs">RomaJS</ref></desc></application></appInfo><appInfo><application ident="RomaJS" version="1.0.0" when="2024-03-20T11:15:03.460Z"><desc>File edited with <ref target="https://github.com/TEIC/romajs">RomaJS</ref></desc></application></appInfo></encodingDesc>
   </teiHeader>
   <text>
     <body>
@@ -68,7 +68,7 @@
         <moduleRef key="header" include="teiHeader fileDesc titleStmt publicationStmt sourceDesc"/>
         
         <!-- required core elements (p and title for use in titleStmt) -->
-        <moduleRef key="core" include="p title note author"/>
+        <moduleRef key="core" include="p title note author reg date"/>
         
         <!-- required textstructure elements (TEI, text, and body) -->
         <moduleRef key="textstructure" include="TEI text body"/>
@@ -77,7 +77,7 @@
         <moduleRef key="tei"/>
         
         
-      <moduleRef key="namesdates" include="listPerson person occupation"/></schemaSpec>
+      <moduleRef key="namesdates" include="listPerson person occupation persName"/></schemaSpec>
     </body>
   </text>
 </TEI>
