@@ -10,29 +10,21 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="tei:reg">
-        <xsl:copy>
-            <xsl:apply-templates/>
-        </xsl:copy>
+        <xsl:copy-of select='.'/>
     </xsl:template>
     <xsl:template match="tei:date">
-        <xsl:copy>
-            <xsl:apply-templates/>
-        </xsl:copy>
+        <xsl:copy-of select='.'/>
     </xsl:template>
     <xsl:template match="tei:note">
-        <xsl:copy>
-            <xsl:apply-templates/>
-        </xsl:copy>
+        <xsl:copy-of select='.'/>
     </xsl:template>
     <xsl:template match="tei:person">
         <tei:person>
             <xsl:copy-of select="@*"/>
-            <xsl:variable name="attrn">
-                <xsl:value-of select="normalize-space(tei:persName/@n)"/>
-            </xsl:variable>
-            <xsl:variable name="attrkey">
-                <xsl:value-of select="tei:persName/@key"/>
-            </xsl:variable>
+            <xsl:variable name="attrn" select="normalize-space(tei:persName/@n)"/>
+            <xsl:variable name="attrkey" select="tei:persName/@key"/>
+            <xsl:variable name="date" select="tei:persName/tei:date"/>
+            <xsl:variable name="reg" select="tei:persName/tei:reg"/>
             <xsl:for-each select="tokenize(normalize-space(tei:persName/tei:name/text()), ', ')">
                 <xsl:choose>
                     <xsl:when test="position() = 1">
@@ -44,6 +36,8 @@
                                 <xsl:attribute name="key" select="$attrkey"/>
                             </xsl:if>
                             <xsl:value-of select="."/>
+                            <xsl:copy-of select="$date"/>
+                            <xsl:copy-of select="$reg"/>
                         </tei:persName>
                     </xsl:when>
                     <xsl:otherwise>
@@ -77,8 +71,6 @@
                 </xsl:choose>
             </xsl:for-each>
             <xsl:apply-templates select="tei:note"/>
-            <xsl:apply-templates select="./tei:persName/tei:reg"/>
-            <xsl:apply-templates select="./tei:persName/tei:date"/>
         </tei:person>
     </xsl:template>
 </xsl:stylesheet>
